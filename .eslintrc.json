@@ -1,0 +1,61 @@
+{
+  "extends": [
+    "airbnb"
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".json", ".native.js", ".android.js", ".ios.js"]
+      }
+    }
+  },
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "plugins": [
+    "react",
+    "react-hooks"
+  ],
+  "rules": {
+    "react/jsx-props-no-spreading": ["off"],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "indent": ["error", 4],
+    "object-curly-newline": ["off"],
+    "camelcase": ["off"],
+    "react/forbid-prop-types": ["off"],
+    "global-require": 0,
+    "react/prop-types": ["error", { "ignore": ["navigation"] }],
+    "react/jsx-indent": ["error", 4],
+    "react/jsx-indent-props": ["error", 4],
+    "class-methods-use-this": ["off"],
+    "react/destructuring-assignment": ["off"],
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "no-shadow": ["off"],
+    "no-use-before-define": ["error", { "variables": false }],
+    "jsx-a11y/href-no-hash": ["off"],
+    "import/no-cycle": ["off"],
+    "react/jsx-filename-extension": ["warn", {
+      "extensions": [".js", ".jsx"]
+    }],
+    "max-len": [
+      "warn",
+      {
+        "code": 120,
+        "tabWidth": 2,
+        "comments": 80,
+        "ignoreComments": false,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ]
+  }
+}
