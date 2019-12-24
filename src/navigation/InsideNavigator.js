@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
@@ -6,6 +5,7 @@ import HomeScreen from '../screens/home/HomeScreen';
 import TabBar from '../screens/auth/components/TabBar';
 import NewAccountScreen from '../screens/home/NewAccountScreen';
 import PasswordScreen from '../screens/home/PasswordScreen';
+import SettingsScreen from '../screens/settings/SettingsScreen';
 
 const HomeStack = createStackNavigator({
     Home: {
@@ -28,15 +28,18 @@ const HomeStack = createStackNavigator({
     },
 });
 
-const ProfileStack = createStackNavigator({
-    Profile: {
-        screen: HomeScreen,
+const SettingsStack = createStackNavigator({
+    Settings: {
+        screen: SettingsScreen,
+        navigationOptions: {
+            header: null,
+        },
     },
 });
 
 const TabNavigator = createBottomTabNavigator({
     Home: HomeStack,
-    Profile: ProfileStack,
+    Profile: SettingsStack,
 }, {
     tabBarComponent: TabBar,
 });

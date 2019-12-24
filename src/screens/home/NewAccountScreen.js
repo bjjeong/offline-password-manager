@@ -68,7 +68,7 @@ class NewAccountScreen extends PureComponent {
             newAccounts.push({ account, username, color: colors[color] });
 
             await Keychain.setInternetCredentials(account, JSON.stringify(user), password);
-            await Keychain.setGenericPassword('me', JSON.stringify(newAccounts));
+            await Keychain.setGenericPassword('accounts', JSON.stringify(newAccounts));
             this.setState({ ...initialState }, () => this.props.navigation.dispatch(resetAction));
         } else {
             this.setState({ validate: true });
@@ -151,7 +151,7 @@ class NewAccountScreen extends PureComponent {
                     <Input
                         status={validateAccount ? 'danger' : 'basic'}
                         label="Account Name"
-                        placeholder="Ex. Facebook"
+                        placeholder="Instagram"
                         value={account}
                         onChangeText={this.handleChange('account')}
                         caption={validateAccount ? 'Cannot be empty' : ''}
@@ -160,8 +160,8 @@ class NewAccountScreen extends PureComponent {
                     />
                     <Input
                         status={validateUsername ? 'danger' : 'basic'}
-                        label="Account Name"
-                        placeholder="Username or Email"
+                        label="Username/Email"
+                        placeholder="johndoe@email.com"
                         value={username}
                         onChangeText={this.handleChange('username')}
                         caption={validateUsername ? 'Cannot be empty' : ''}
@@ -171,8 +171,8 @@ class NewAccountScreen extends PureComponent {
                     />
                     <Input
                         status={validatePassword ? 'danger' : 'basic'}
-                        label="Account Name"
-                        placeholder="Password"
+                        label="Password"
+                        placeholder="********"
                         value={password}
                         onChangeText={this.handleChange('password')}
                         caption={validatePassword ? 'Cannot be empty' : ''}

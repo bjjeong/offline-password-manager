@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Icon, TopNavigation, TopNavigationAction, List, ListItem, Button, Layout, CheckBox } from '@ui-kitten/components';
+import { Icon, TopNavigation, TopNavigationAction, List, ListItem, Button, Layout, CheckBox, Modal } from '@ui-kitten/components';
 import { SafeAreaView } from 'react-navigation';
 import * as Keychain from 'react-native-keychain';
+import AsyncStorage from '@react-native-community/async-storage';
 import tinycolor from 'tinycolor2';
+import { Text } from 'react-native';
 
 class HomeScreen extends PureComponent {
     constructor(props) {
@@ -11,6 +13,7 @@ class HomeScreen extends PureComponent {
             accounts: [],
             selectMode: false,
             selected: [],
+            isVisible: false,
         };
     }
 
@@ -20,6 +23,10 @@ class HomeScreen extends PureComponent {
             const accounts = JSON.parse(accountsJSON.password);
             this.setState({ accounts: [...accounts] });
         }
+    }
+
+    goToItem = async (item) => {
+        this.props.navigation.navigate('ViewPassword', { item });
     }
 
     handlePress = (index) => {
@@ -55,7 +62,7 @@ class HomeScreen extends PureComponent {
             const accounts = JSON.parse(accountsJSON.password);
             const deleted = accounts.filter((acc, index) => selected.includes(index));
             const newAccounts = accounts.filter((acc, index) => !selected.includes(index));
-            await Keychain.setGenericPassword('me', JSON.stringify(newAccounts));
+            await Keychain.setGenericPassword('accounts', JSON.stringify(newAccounts));
             deleted.forEach((acc) => Keychain.resetInternetCredentials(acc.account));
             this.setState({
                 accounts: [...newAccounts],
@@ -97,7 +104,7 @@ class HomeScreen extends PureComponent {
             <Button
                 style={style}
                 size="small"
-                onPress={() => this.props.navigation.navigate('ViewPassword', { item })}
+                onPress={() => this.goToItem(item)}
             >
                 View
             </Button>
@@ -140,6 +147,12 @@ class HomeScreen extends PureComponent {
         );
     }
 
+    renderModalElement = () => {
+        return (
+            <Text>Hello</Text>
+        );
+    }
+
     render() {
         return (
             <Layout style={{ flex: 1 }}>
@@ -155,6 +168,14 @@ class HomeScreen extends PureComponent {
                         data={this.state.accounts}
                         renderItem={this.renderItem}
                     />
+                    <Modal
+                        allowBackdrop
+                        backdropStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+                        onBackdropPress={this.toggleModal}
+                        visible={this.state.isVisible}
+                    >
+                        { this.renderModalElement() }
+                    </Modal>
                 </SafeAreaView>
             </Layout>
         );

@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-navigation';
 import { BottomNavigation, BottomNavigationTab, Icon } from '@ui-kitten/components';
 
 const PersonIcon = (style) => (
-    <Icon {...style} name="person" />
+    <Icon {...style} name="settings" />
 );
 
 const HomeIcon = (style) => (

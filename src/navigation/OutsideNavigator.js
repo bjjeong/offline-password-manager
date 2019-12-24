@@ -1,17 +1,16 @@
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import InsideNavigator from './InsideNavigator';
-// import AuthNavigator from './AuthNavigator';
+import AuthNavigator from './AuthNavigator';
+import AuthLoading from '../screens/auth/AuthLoading';
 
 const OutsideNavigator = createAppContainer(createSwitchNavigator(
     {
-        // Auth: AuthNavigator,
-        App: {
-            screen: InsideNavigator,
-        },
+        Auth: AuthNavigator,
+        Loading: AuthLoading,
+        App: InsideNavigator,
     },
     {
-        // initialRouteName: 'Auth',
-        initialRouteName: 'App',
+        initialRouteName: 'Loading',
     },
 ));
 
