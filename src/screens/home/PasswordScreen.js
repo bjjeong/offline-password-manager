@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-navigation';
 import { View, StyleSheet } from 'react-native';
-import { TopNavigation, TopNavigationAction, Icon, Text } from '@ui-kitten/components';
+import { TopNavigation, TopNavigationAction, Icon, Text, Input, Button } from '@ui-kitten/components';
 import tinycolor from 'tinycolor2';
 import * as Keychain from 'react-native-keychain';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const PasswordScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
+    const [userPassword, setUserPassword] = useState('');
+    const [validated, setValidated] = useState(false);
 
     useEffect(() => {
         const item = navigation.getParam('item');
@@ -30,6 +33,59 @@ const PasswordScreen = ({ navigation }) => {
         return <TopNavigationAction icon={backIcon} onPress={goBack} />;
     };
 
+    const validatePassword = async () => {
+        try {
+            const values = await Keychain.getInternetCredentials('app');
+            if (values) {
+                const appPassword = values.password;
+                if (appPassword === userPassword) {
+                    setValidated(true);
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+
+    const renderPassword = () => {
+        if (validated) {
+            return (
+                <View style={styles.passwordContainer}>
+                    <Text style={styles.password}>{password}</Text>
+                </View>
+            );
+        }
+
+        return (
+            <View style={{ width: '100%', alignItems: 'center' }}>
+                <Input
+                    onChangeText={setUserPassword}
+                    placeholder="Enter app passcode to view password"
+                    value={userPassword}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={{ marginTop: 20 }}
+                />
+                <Button
+                    disabled={userPassword.length === 0}
+                    size="small"
+                    style={styles.validateButton}
+                    onPress={validatePassword}
+                >
+                    VALIDATE
+                </Button>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={[styles.separator, { marginRight: 10 }]} />
+                    <Text>OR</Text>
+                    <View style={[styles.separator, { marginLeft: 10 }]} />
+                </View>
+                <Button size="large" appearance="ghost" status="primary">Use Biometrics</Button>
+            </View>
+        );
+    };
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor }}>
             <TopNavigation
@@ -42,9 +98,7 @@ const PasswordScreen = ({ navigation }) => {
             <View style={styles.container}>
                 <View style={styles.details}>
                     <Text style={styles.username}>{username}</Text>
-                    <View style={styles.passwordContainer}>
-                        <Text style={styles.password}>{password}</Text>
-                    </View>
+                    { renderPassword() }
                 </View>
             </View>
         </SafeAreaView>
@@ -74,12 +128,22 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     username: {
-        fontSize: 16,
+        fontSize: 20,
         marginBottom: 15,
     },
     password: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    separator: {
+        flex: 1,
+        backgroundColor: '#333',
+        height: 1,
+        marginVertical: 20,
+    },
+    validateButton: {
+        width: '100%',
+        marginTop: 10,
     },
 });
 
