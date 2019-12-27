@@ -118,6 +118,10 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'white',
         padding: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
     },
     passwordContainer: {
         justifyContent: 'center',
